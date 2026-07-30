@@ -6,9 +6,10 @@ import MetroTile from '../components/MetroTile';
 import { METRO } from '../theme';
 import { vmsApi, databasesApi, k8sApi, storageApi } from '../api';
 
-// The real Metro Start Screen. Tiles carry live backLabel content
-// (real running status, real counts) so the auto-flip genuinely
-// shows useful information — not decoration for its own sake.
+// The real Metro Start Screen. Every row is built from exactly two
+// equal-width columns (see theme.ts calculateTileDimensions), so the
+// grid always fits the real device width — no overflow, nothing cut
+// off-screen, regardless of phone size.
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>();
@@ -50,6 +51,7 @@ export default function HomeScreen() {
       >
         <Text style={styles.greeting}>gravrel</Text>
 
+        {/* Row 1 — 2 equal columns: [large VM tile] [medium DB + medium K8s stacked] */}
         <View style={styles.row}>
           <MetroTile
             label="Cloud VMs"
@@ -85,6 +87,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        {/* Row 2 — 2 equal medium tiles */}
         <View style={styles.row}>
           <MetroTile
             label="Object Storage"
@@ -107,6 +110,7 @@ export default function HomeScreen() {
           />
         </View>
 
+        {/* Row 3 — 1 wide tile spanning both columns */}
         <View style={styles.row}>
           <MetroTile
             label="Billing"
@@ -118,6 +122,8 @@ export default function HomeScreen() {
             onPress={() => navigation.navigate('Settings')}
           />
         </View>
+
+        {/* Row 4 — small tile, doesn't need to fill the row */}
         <View style={styles.row}>
           <MetroTile
             label="Settings"

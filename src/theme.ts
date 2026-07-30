@@ -1,31 +1,31 @@
+import { Dimensions } from 'react-native';
+
 // GravRel Metro Theme — genuine Windows 10 Mobile design language.
 // Flat, sharp-cornered tiles. Bold accent colors per service.
-// Dark canvas. Confident, oversized typography. No shadows, no
-// rounded corners — Metro's whole identity was flatness and color.
+// Dark canvas. Confident, oversized typography.
+//
+// Tile sizes are calculated from the REAL device screen width, not
+// hardcoded pixels — this is what makes the grid actually fit on
+// every phone, narrow or wide, instead of overflowing off-screen.
 
 export const METRO = {
-  background: '#060E1A',   // deep near-black canvas
-  surface: '#0A1628',      // slightly lifted surface (rare use)
+  background: '#060E1A',
+  surface: '#0A1628',
   textPrimary: '#FFFFFF',
   textSecondary: '#94A3B8',
   textMuted: '#4B5563',
 
-  // Real Metro-style accent palette — each service gets its own
-  // saturated, distinct tile color, same way Windows Phone assigned
-  // Mail=blue, Photos=purple, Store=orange, etc.
   accents: {
-    green: '#1D9E75',    // GravRel primary — VMs
-    blue: '#0078D7',     // Databases (genuine Windows Phone blue)
-    purple: '#8B5CF6',   // Kubernetes
-    amber: '#F0A30A',    // Storage (genuine Windows Phone amber/gold)
-    teal: '#00ABA9',     // Best Answer (genuine Windows Phone teal)
-    magenta: '#D80073',  // Billing (genuine Windows Phone magenta)
-    gray: '#647687',     // Settings (genuine Windows Phone steel/gray)
+    green: '#1D9E75',
+    blue: '#0078D7',
+    purple: '#8B5CF6',
+    amber: '#F0A30A',
+    teal: '#00ABA9',
+    magenta: '#D80073',
+    gray: '#647687',
   },
 
   spacing: { xs: 4, sm: 8, md: 12, lg: 20, xl: 28, xxl: 40 },
-
-  // Metro used NO rounded corners — sharp edges are core to the identity
   radius: 0,
 
   fontSizes: {
@@ -47,10 +47,24 @@ export const METRO = {
 
 export type TileSize = 'small' | 'medium' | 'wide' | 'large';
 
-// Real Metro tile dimensions, proportional to a 2-column base grid
-export const TILE_DIMENSIONS: Record<TileSize, { width: number; height: number }> = {
-  small:  { width: 78,  height: 78 },
-  medium: { width: 162, height: 162 },
-  wide:   { width: 342, height: 162 },
-  large:  { width: 342, height: 342 },
-};
+// Real, responsive tile grid math. A "column unit" is half the
+// available content width (screen width minus side padding and the
+// gap between columns). Every tile size is built from that one real
+// number, so the whole grid always fits — 360dp phone or 430dp phone.
+function calculateTileDimensions() {
+  const screenWidth = Dimensions.get('window').width;
+  const sidePadding = METRO.spacing.lg; // matches HomeScreen's scroll padding
+  const gap = METRO.spacing.sm;
+
+  const contentWidth = screenWidth - sidePadding * 2;
+  const colUnit = (contentWidth - gap) / 2;
+
+  return {
+    small:  { width: (colUnit - gap) / 2, height: (colUnit - gap) / 2 },
+    medium: { width: colUnit, height: colUnit },
+    wide:   { width: contentWidth, height: colUnit },
+    large:  { width: colUnit, height: colUnit * 2 + gap },
+  };
+}
+
+export const TILE_DIMENSIONS: Record<TileSize, { width: number; height: number }> = calculateTileDimensions();
