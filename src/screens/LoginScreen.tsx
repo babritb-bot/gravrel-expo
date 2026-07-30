@@ -58,7 +58,10 @@ export default function LoginScreen({ navigation }: any) {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
         <View style={styles.content}>
-          <View style={styles.logoGlow} />
+          <View style={styles.logoWrap}>
+            <View style={styles.logoGlow} />
+            <Image source={require('../../assets/gravrel-logo.jpg')} style={styles.logoImage} resizeMode="cover" />
+          </View>
           <Text style={styles.brand}>gravrel</Text>
           <Text style={styles.tagline}>{step === 'credentials' ? 'Sign in' : `Enter code sent to +91 ${phone}`}</Text>
 
@@ -132,9 +135,11 @@ export default function LoginScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: METRO.background },
   content: { flex: 1, justifyContent: 'center', paddingHorizontal: 32 },
-  logoGlow: { position: 'absolute', top: 100, left: '50%', marginLeft: -60, width: 120, height: 120, backgroundColor: METRO.accents.green, opacity: 0.15 },
-  brand: { fontSize: 44, fontWeight: '300', color: '#fff', letterSpacing: -1, marginBottom: 4 },
-  tagline: { fontSize: 15, color: METRO.textSecondary, marginBottom: 28 },
+  logoWrap: { alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  logoGlow: { position: 'absolute', width: 130, height: 130, borderRadius: 65, backgroundColor: METRO.accents.green, opacity: 0.25 },
+  logoImage: { width: 96, height: 96, borderRadius: 20 },
+  brand: { fontSize: 44, fontWeight: '300', color: '#fff', letterSpacing: -1, marginBottom: 4, textAlign: 'center' },
+  tagline: { fontSize: 15, color: METRO.textSecondary, marginBottom: 28, textAlign: 'center' },
   error: { color: '#EF4444', fontSize: 13, marginBottom: 12 },
   input: {
     borderBottomWidth: 2, borderBottomColor: METRO.accents.green,

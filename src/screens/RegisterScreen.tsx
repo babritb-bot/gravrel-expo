@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api } from '../api';
 import { METRO } from '../theme';
@@ -31,6 +31,10 @@ export default function RegisterScreen({ navigation }: any) {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.logoWrap}>
+            <View style={styles.logoGlow} />
+            <Image source={require('../../assets/gravrel-logo.jpg')} style={styles.logoImage} resizeMode="cover" />
+          </View>
           <Text style={styles.brand}>gravrel</Text>
           <Text style={styles.tagline}>Create your account</Text>
           <Text style={styles.sub}>India's DPDP-native cloud, from ₹199/month</Text>
@@ -57,9 +61,12 @@ export default function RegisterScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: METRO.background },
   content: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 32, paddingVertical: 40 },
-  brand: { fontSize: 40, fontWeight: '300', color: '#fff', letterSpacing: -1 },
-  tagline: { fontSize: 20, color: '#fff', fontWeight: '600', marginTop: 16, marginBottom: 4 },
-  sub: { fontSize: 13, color: METRO.textSecondary, marginBottom: 28 },
+  logoWrap: { alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
+  logoGlow: { position: 'absolute', width: 110, height: 110, borderRadius: 55, backgroundColor: METRO.accents.green, opacity: 0.25 },
+  logoImage: { width: 80, height: 80, borderRadius: 18 },
+  brand: { fontSize: 40, fontWeight: '300', color: '#fff', letterSpacing: -1, textAlign: 'center' },
+  tagline: { fontSize: 20, color: '#fff', fontWeight: '600', marginTop: 16, marginBottom: 4, textAlign: 'center' },
+  sub: { fontSize: 13, color: METRO.textSecondary, marginBottom: 28, textAlign: 'center' },
   error: { color: '#EF4444', fontSize: 13, marginBottom: 12 },
   input: { borderBottomWidth: 2, borderBottomColor: METRO.accents.green, color: '#fff', fontSize: 17, paddingVertical: 10, marginBottom: 18 },
   button: { backgroundColor: METRO.accents.green, paddingVertical: 16, alignItems: 'center', marginTop: 12 },
