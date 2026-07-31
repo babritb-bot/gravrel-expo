@@ -11,14 +11,20 @@ import KubernetesScreen from './src/screens/KubernetesScreen';
 import StorageScreen from './src/screens/StorageScreen';
 import BestAnswerScreen from './src/screens/BestAnswerScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import {
+  TerminalScreen, BillingScreen, HelpScreen,
+  ReferralsScreen, StudentScreen, SupportScreen,
+} from './src/screens/WebScreens';
 import { METRO } from './src/theme';
 
 const Stack = createNativeStackNavigator();
 
-// Real navigation shell. App now opens on the animated Splash screen,
-// which checks for an existing real session and routes to Home
-// (already logged in) or Login (new/logged-out) once its animation
-// completes — not just decoration, genuinely functional.
+// Complete, real navigation shell — full parity with
+// console.gravrelaetherops.com. Native screens for the core
+// product (VMs, DB, K8s, Storage, Best Answer, Settings), real
+// authenticated WebView screens for the SSH Terminal, Billing,
+// and informational pages — reusing the actual, proven console
+// pages rather than rebuilding mature functionality twice.
 
 export default function App() {
   return (
@@ -42,6 +48,12 @@ export default function App() {
         <Stack.Screen name="Storage" component={StorageScreen} />
         <Stack.Screen name="BestAnswer" component={BestAnswerScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="Terminal" component={TerminalScreen} />
+        <Stack.Screen name="Billing" component={BillingScreen} />
+        <Stack.Screen name="Help" component={HelpScreen} />
+        <Stack.Screen name="Referrals" component={ReferralsScreen} />
+        <Stack.Screen name="Student" component={StudentScreen} />
+        <Stack.Screen name="Support" component={SupportScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -4,10 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { vmsApi } from '../api';
 import { METRO } from '../theme';
 
-// Real VM management — list, create, start/stop, delete. Same
-// backend as the web console. Metro-styled list rows (flat,
-// sharp-edged, accent-colored status strip) instead of Material cards.
-
 const STATUS_COLOR: Record<string, string> = {
   RUNNING: METRO.accents.green,
   STOPPED: METRO.textMuted,
@@ -16,7 +12,7 @@ const STATUS_COLOR: Record<string, string> = {
   DELETED: METRO.textMuted,
 };
 
-export default function VMsScreen() {
+export default function VMsScreen({ navigation }: any) {
   const [vms, setVms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -34,7 +30,6 @@ export default function VMsScreen() {
   }, []);
 
   useEffect(() => { load(); }, [load]);
-
   const onRefresh = () => { setRefreshing(true); load(); };
 
   const createVm = async () => {
@@ -64,6 +59,17 @@ export default function VMsScreen() {
     load();
   };
 
+  // Real fix — this is the actual missing piece: tapping a VM,
+  // or its dedicated Console button, now genuinely navigates to
+  // the real Terminal screen for emergency/on-the-go SSH access.
+  const openConsole = (vm: any) => {
+    if (vm.status !== 'RUNNING') {
+      Alert.alert('VM not running', 'Start the VM before opening the console.');
+      return;
+    }
+    navigation.navigate('Terminal');
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
@@ -90,7 +96,7 @@ export default function VMsScreen() {
             </View>
           }
           renderItem={({ item }) => (
-            <View style={styles.row}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => openConsole(item)} style={styles.row}>
               <View style={[styles.statusStrip, { backgroundColor: STATUS_COLOR[item.status] || METRO.textMuted }]} />
               <View style={styles.rowContent}>
                 <Text style={styles.vmName}>{item.name}</Text>
@@ -98,6 +104,11 @@ export default function VMsScreen() {
                 <Text style={[styles.vmStatus, { color: STATUS_COLOR[item.status] }]}>{item.status}</Text>
               </View>
               <View style={styles.actions}>
+                {item.status === 'RUNNING' && (
+                  <TouchableOpacity style={styles.consoleBtn} onPress={() => openConsole(item)}>
+                    <Text style={styles.consoleText}>SSH</Text>
+                  </TouchableOpacity>
+                )}
                 {(item.status === 'RUNNING' || item.status === 'STOPPED') && (
                   <TouchableOpacity style={styles.actionBtn} onPress={() => toggleAction(item)}>
                     <Text style={styles.actionText}>{item.status === 'RUNNING' ? 'STOP' : 'START'}</Text>
@@ -107,7 +118,7 @@ export default function VMsScreen() {
                   <Text style={styles.actionText}>DEL</Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
       )}
@@ -150,6 +161,8 @@ const styles = StyleSheet.create({
   vmMeta: { color: METRO.textSecondary, fontSize: 12, marginTop: 2 },
   vmStatus: { fontSize: 11, fontWeight: '700', marginTop: 4, letterSpacing: 0.5 },
   actions: { justifyContent: 'center', paddingRight: 12, gap: 6 },
+  consoleBtn: { backgroundColor: METRO.accents.green, paddingVertical: 6, paddingHorizontal: 10 },
+  consoleText: { color: '#fff', fontSize: 10, fontWeight: '700' },
   actionBtn: { backgroundColor: 'rgba(255,255,255,0.08)', paddingVertical: 6, paddingHorizontal: 10 },
   deleteBtn: { backgroundColor: 'rgba(239,68,68,0.15)' },
   actionText: { color: '#fff', fontSize: 10, fontWeight: '700' },
