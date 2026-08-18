@@ -14,17 +14,11 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import {
   TerminalScreen, BillingScreen, HelpScreen,
   ReferralsScreen, StudentScreen, SupportScreen,
+  VoiceAgentScreen, PlatformPulseScreen,
 } from './src/screens/WebScreens';
 import { METRO } from './src/theme';
 
 const Stack = createNativeStackNavigator();
-
-// Complete, real navigation shell — full parity with
-// console.gravrelaetherops.com. Native screens for the core
-// product (VMs, DB, K8s, Storage, Best Answer, Settings), real
-// authenticated WebView screens for the SSH Terminal, Billing,
-// and informational pages — reusing the actual, proven console
-// pages rather than rebuilding mature functionality twice.
 
 export default function App() {
   return (
@@ -54,6 +48,8 @@ export default function App() {
         <Stack.Screen name="Referrals" component={ReferralsScreen} />
         <Stack.Screen name="Student" component={StudentScreen} />
         <Stack.Screen name="Support" component={SupportScreen} />
+        <Stack.Screen name="VoiceAgent" component={VoiceAgentScreen} />
+        <Stack.Screen name="PlatformPulse" component={PlatformPulseScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,15 +1,8 @@
 import AuthenticatedWebView from '../components/AuthenticatedWebView';
 
-// Real, thin wrapper screens — each embeds the actual, already-proven
-// live console page, genuinely authenticated. This is how the SSH
-// Terminal (real xterm.js + WebSocket bridge), Billing (real Razorpay
-// checkout), and the informational pages achieve full, honest parity
-// with console.gravrelaetherops.com without reimplementing mature,
-// working browser technology natively for no real benefit.
+// Real, thin wrapper screens embedding actual, already-proven live
+// console pages, genuinely authenticated.
 
-// Terminal opens via the VMs page itself — the real terminal is a
-// modal triggered by tapping a VM's Terminal icon, exactly matching
-// how it works on the actual web console.
 export function TerminalScreen({ navigation }: any) {
   return <AuthenticatedWebView path="/vms" title="VMs & Terminal" navigation={navigation} />;
 }
@@ -32,4 +25,12 @@ export function StudentScreen({ navigation }: any) {
 
 export function SupportScreen({ navigation }: any) {
   return <AuthenticatedWebView path="/support" title="Support" navigation={navigation} />;
+}
+
+export function VoiceAgentScreen({ navigation }: any) {
+  return <AuthenticatedWebView path="/voice-agent" title="Voice Agent" navigation={navigation} />;
+}
+
+export function PlatformPulseScreen({ navigation }: any) {
+  return <AuthenticatedWebView path="/pulse" title="Platform Pulse" navigation={navigation} />;
 }
